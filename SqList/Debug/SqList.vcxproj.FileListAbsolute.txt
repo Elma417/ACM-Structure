@@ -1,0 +1,2 @@
+C:\Users\w1834\Source\Repos\Elma417\ACM-Structure\SqList\Debug\SqList.exe
+C:\Users\w1834\Source\Repos\Elma417\ACM-Structure\SqList\Debug\SqList.pdb
