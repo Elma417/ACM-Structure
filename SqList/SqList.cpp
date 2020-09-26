@@ -95,5 +95,6 @@ int main()
                     L = deleteEle(L, i--);
     }
     display(L);
+    scanf("%d",choice);
     return 0;
 }

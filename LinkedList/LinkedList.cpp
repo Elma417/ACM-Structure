@@ -163,5 +163,6 @@ int main()
 		}
 	}
 	display(L);
+	scanf("%d", choice);
 	return 0;
 }
