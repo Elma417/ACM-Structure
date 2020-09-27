@@ -53,10 +53,10 @@ void Display(SqStack S)
 		puts("");
 	}
 }
+/*Test堆栈是否正常
 int main()
 {
-	/*	
-	Test堆栈是否正常
+	
 	SqStack S = InitStack();
 	int	elem,size;
 	printf("请输入元素个数\n");
@@ -65,11 +65,13 @@ int main()
 	{
 		printf("请输入第%d个元素:\n", i);
 		scanf("%d", &elem);
+		if (i == size)puts("\n");
 		S=Push(S, elem);
 	}
 	Display(S);
-	*/
+	
 
 	getchar();
 	return 0;
 }
+*/
