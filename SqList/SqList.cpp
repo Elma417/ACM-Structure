@@ -75,7 +75,7 @@ int main()
         puts("输入错误请重新输入选项");
         scanf("%d", &choice);
     }
-    if (choice == 1)
+    if (choice == 1)`
     {
         int key;
         printf("请输入key值:\n");
