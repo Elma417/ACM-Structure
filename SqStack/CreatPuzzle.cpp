@@ -1,131 +1,129 @@
-#include<stdio.h>
-#include<Windows.h>
-#include<time.h>
-#include<math.h>
-//地图长度L，包括迷宫主体40，外侧的包围的墙体2，最外侧包围路径2（之后会解释）
-#define L 44
-//墙和路径的标识
-#define WALL  0
-#define ROUTE 1 
-//控制迷宫的复杂度，数值越大复杂度越低，最小值为0
-static int Rank = 0;
-//生成迷宫
-void Draw()
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#include<ctime>
+#include<string>
+#include<vector>
+#include<queue>
+#include<algorithm>
+#define _CRT_SECURE_NO_WARNINGS 1   //Visual Studio Scanf会被定义为不安全操作导致无法编译故将安全警告关闭
+#define INF 99999999
+#define SIZE 11     //奇数，代表迷宫总大小
+#define bug puts("ERROR\n")
+using namespace std;
+struct Node 
 {
-	srand((unsigned)time(NULL));
-	int** Maze = (int**)malloc(L * sizeof(int*));
-	for (int i = 0; i < L; i++)
-	{
-		Maze[i] = (int*)calloc(L, sizeof(int));
-	}
-
-	//最外围层设为路径的原因，为了防止挖路时挖出边界，同时为了保护迷宫主体外的一圈墙体被挖穿
-	for (int i = 0; i < L; i++)
-	{
-		Maze[i][0] = ROUTE;
-		Maze[0][i] = ROUTE;
-		Maze[i][L - 1] = ROUTE;
-		Maze[L - 1][i] = ROUTE;
-	}
-
-	//创造迷宫，（2，2）为起点
-	CreateMaze(Maze, 2, 2);
-
-	//画迷宫的入口和出口
-	Maze[2][1] = ROUTE;
-
-	//由于算法随机性，出口有一定概率不在（L-3,L-2）处，此时需要寻找出口
-	for (int i = L - 3; i >= 0; i--)
-	{
-		if (Maze[i][L - 3] == ROUTE)
-		{
-			Maze[i][L - 2] = ROUTE;
-			break;
-		}
-	}
-
-	//画迷宫
-	for (int i = 0; i < L; i++)
-	{
-		for (int j = 0; j < L; j++)
-
-			if (Maze[i][j] == ROUTE)
-			{
-				printf("  ");
-			}
-			else {
-				printf("国");
-			}
-	}
-	printf("\n");
-
-	for (int i = 0; i < L; i++)
-	{
-
-		free(Maze[i]);
-		free(Maze);
-	}	
-	system("pause");
+    int x, y;
+    Node() { x = 0; y = 0; }
+    Node(int x, int y,int dir) :x(x), y(y) {}
+};
+int Maze[SIZE][SIZE];
+vector<Node>maze;//用于随机取点 
+Node Move[4] = { Node(-1,0),Node(0,1),Node(1,0),Node(0,-1) };//上下左右移动 
+int rand(int t) {//随机一个从0-(t-1)的整数 
+    return (int)rand() % t;
 }
- 
-void CreateMaze(int **maze, int x, int y) {
-	maze[x][y] = ROUTE;
- 
-	//确保四个方向随机
-	int direction[4][2] = { { 1,0 },{ -1,0 },{ 0,1 },{ 0,-1 } };
-	for (int i = 0; i < 4; i++) {
-		int r = rand() % 4;
-		int temp = direction[0][0];
-		direction[0][0] = direction[r][0];
-		direction[r][0] = temp;
- 
-		temp = direction[0][1];
-		direction[0][1] = direction[r][1];
-		direction[r][1] = temp;
-	}
- 
-	//向四个方向开挖
-	for(int i = 0; i < 4; i++) 
-	{
-		int dx = x;
-		int dy = y;
- 
-		//控制挖的距离，由Rank来调整大小
-		int range = 1 + (Rank == 0 ? 0 : rand() % Rank);
-		while(range>0)
-		{
-			dx += direction[i][0];
-			dy += direction[i][1];
- 
-			//排除掉回头路
-			if (maze[dx][dy] == ROUTE) 
-			{
-				break;
-			}
- 
-			//判断是否挖穿路径
-			int count = 0;
-			for(int j = dx - 1; j < dx + 2; j++) {
-				for (int k = dy - 1; k < dy + 2; k++) {
-					//abs(j - dx) + abs(k - dy) == 1 确保只判断九宫格的四个特定位置
-					if (abs(j - dx) + abs(k - dy) == 1 && maze[j][k] == ROUTE) {
-						count++;
-					}
-				}
-			}
- 
-			if (count > 1) {
-				break;
-			}
- 
-			//确保不会挖穿时，前进
-			--range;
-			maze[dx][dy] = ROUTE;
-		}
- 
-		//没有挖穿危险，以此为节点递归
-		if (range <= 0) {
-			CreateMaze(maze, dx, dy);
-		}
-	}
+void init() {//初始化 
+    memset(Maze, 0, sizeof(Maze));
+    srand(time(0));
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = 0; j < SIZE / 2; j++) {
+            maze.push_back(Node(i, j));
+        }
+    }
 }
+Node RandNode() {//返回一个列表中的随机节点 
+    int temp = rand(maze.size());
+    Node Now = maze[temp];
+    return Now;
+}
+int FindWay(Node a) {//寻找可移动的方向 
+    vector<int>temp;
+    vector<int>reverse;
+    for (int i = 0; i < 4; i++) {
+        int tx = a.x + Move[i].x;
+        int ty = a.y + Move[i].y;
+        if (tx < 0 || tx >= SIZE / 2 || ty < 0 || ty >= SIZE / 2)continue;
+        if (Maze[tx * 2 + 1][ty * 2 + 1] == 1) {
+            reverse.push_back(i);
+            continue;
+        }
+        temp.push_back(i);
+    }
+    if (temp.size() == 0) {
+        //如果无可移动方向，则可能为死点，将其四周可联通的方向全打通 
+        for (int i = 0; i < 4; i++) {
+            int tempx = a.x * 2 + 1 + Move[i].x;
+            int tempy = a.y * 2 + 1 + Move[i].y;
+            if (tempx > 0 && tempx < SIZE - 1 && tempy>0 && tempy < SIZE - 1)
+                Maze[tempx][tempy] = 1;
+        }
+        //如果是死点，则生成一个2*2的房间与周围相连,让它更像一个真正的迷宫
+        for (int i = 0; i <= 1; i++) {
+            for (int j = 0; j <= 1; j++) {
+                int tx = a.x * 2 + 1 + i;
+                int ty = a.y * 2 + 1 + j;
+                if (tx > 0 && tx < SIZE - 1 && ty>0 && ty < SIZE - 1) {
+                    Maze[tx][ty] = 1;
+                }
+            }
+        }
+        return -1;
+    }
+    else return temp[rand(temp.size())];
+}
+void Erase(Node t) {//删除节点，保证随机取点的正确性 
+    int l = -1, r = maze.size();
+    while (r - l > 1) {
+        int temp = (l + r) / 2;
+        if (maze[temp].x > t.x || (maze[temp].x == t.x && maze[temp].y > t.y)) {
+            r = temp;
+        }
+        else l = temp;
+    }
+    Node lt = maze[l];
+    maze.erase(maze.begin() + l);
+}
+void Creat() {//生成迷宫 
+    while (maze.size()) {
+        Node t = RandNode();
+        queue<Node>q;
+        q.push(t);
+        int flag = 0;
+        Maze[1][1] = 1;
+        Maze[SIZE - 2][SIZE - 2] = 1;
+        while (q.size()) {
+            Node temp = q.front(); q.pop();
+            Erase(temp);
+            Maze[temp.x * 2 + 1][temp.y * 2 + 1] = 1;
+            int Vocation = FindWay(temp);
+            if (Vocation == -1)break;
+            Node Direct = Move[Vocation];
+            int Nx = temp.x * 2 + 1 + Direct.x, Ny = temp.y * 2 + 1 + Direct.y;
+            Maze[Nx][Ny] = 1;
+            q.push(Node(temp.x + Direct.x, temp.y + Direct.y));
+        }
+    }
+}
+void print() {//打印迷宫 
+    for (int i = 0; i < SIZE; i++) {
+        //printf("%d:\t", i);
+        for (int j = 0; j < SIZE; j++)
+            if (Maze[i][j] == 1) {
+                printf("□");
+            }
+            else 
+            {
+                printf("■");
+            }
+        printf("\n");
+    }
+}
+int Draw() {
+    init();
+    Creat();
+    print();
+    return 0;
+}
+
