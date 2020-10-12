@@ -16,7 +16,7 @@ struct Node
 {
     int x, y;
     Node() { x = 0; y = 0; }
-    Node(int x, int y,int dir) :x(x), y(y) {}
+    Node(int x, int y) :x(x), y(y) {}
 };
 int Maze[SIZE][SIZE];
 vector<Node>maze;//用于随机取点 

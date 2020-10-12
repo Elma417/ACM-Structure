@@ -5,26 +5,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<iostream>
-typedef struct  SqStack
+typedef struct PosType
 {
-	int *Bottom;
-	int *Top;
+	int x;
+	int y;
+}; PosType;
+typedef struct SElmeType
+{
+	int sq;		//在路径中的序号
+	PosType pos;//坐标
+	int towards;//方向
+};
+typedef struct SqStack
+{
+	SElmeType *Bottom;
+	SElmeType *Top;
 	int StackSize;
 }SqStack;
 SqStack InitStack() 
 {
 	SqStack S;
-	S.Bottom = (int*)malloc(Size * sizeof(SqStack*));
+	S.Bottom = (SElmeType*)malloc(Size * sizeof(SqStack*));
 	if (!S.Bottom)	exit(OVERFLOW);//超过 分配失败
 	S.Top = S.Bottom;    // 栈空时栈顶和栈底指针相同
 	S.StackSize = Size;
 	return S;
 }
-SqStack Push(SqStack S, int elem)
+SqStack Push(SqStack S, SElmeType elem)
 {//入栈
 	if (S.Top - S.Bottom >= S.StackSize)//上溢增加空间
 	{
-		S.Bottom = (int*)realloc(S.Bottom, (S.StackSize + Stackincrement) * sizeof(SqStack*));
+		S.Bottom = (SElmeType*)realloc(S.Bottom, (S.StackSize + Stackincrement) * sizeof(SqStack*));
 		if (!S.Bottom)exit(OVERFLOW);
 		S.Top = S.Bottom + S.StackSize;
 		S.StackSize += Stackincrement;
