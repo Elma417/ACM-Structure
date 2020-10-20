@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\LinkedList",
+    "\\SqList",
     "\\SqStack"
   ],
-  "SelectedNode": "\\SqStack",
+  "SelectedNode": "\\SqStack\\Test.cpp",
   "PreviewInSolutionExplorer": false
 }
