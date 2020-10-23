@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS 1   //Visual Studio Scanf会被定义为不安全操作导致无法编译故将安全警告关闭
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -10,7 +11,6 @@ int Maze[20][20], vis[20][20];
 int count = 0;			 //路径总数
 int dirr[6];			 //遍历顺序
 int minlength = 20 * 20; //目前最小的路径长度
-int opt, opt1, opt2;
 void Random() //随机生成迷宫的函数
 {
 	srand(time(NULL));
@@ -270,7 +270,6 @@ int main()
 		fflush(stdin);
 		system("cls");
 		puts("*************************Maze*************************");
-		puts("*********************洪智豪&周建屹*********************");
 		puts("                       游戏目录");
 		puts("                   1.设定迷宫大小");
 		puts("                   2.自动生成迷宫");
@@ -282,6 +281,7 @@ int main()
 		puts("                   8.退出迷宫程序");
 		puts("******************************************************");
 		printf("请输入您的选择:");
+		int opt;
 		if (!scanf("%d", &opt) || opt < 1 || opt > 8) //检查输入
 		{
 			fflush(stdin);
@@ -299,10 +299,10 @@ int main()
 			puts("程序已退出！\n感谢您的使用！\n");
 			puts("班级：19184115");
 			puts("专业:计算机科学与技术（人工智能与大数据）创新实验班");
-			puts("代码:洪智豪 19195216         文档:周建屹 19151135");
+			puts("洪智豪 19195216");
 
-			if (getchar())
-				return 0;
+			system("PAUSE");
+			return 0;
 		}
 		case 1: //1.设定迷宫大小
 		{
@@ -341,8 +341,8 @@ int main()
 			end.x = M - 2;
 			end.y = N - 1;
 			fflush(stdin);
-			if (getchar())
-				break;
+			system("PAUSE");
+			break;
 		}
 		case 2: //2.自动生成迷宫
 		{
@@ -374,7 +374,7 @@ int main()
 			}
 			count = 0;
 			puts("\n请按回车返回主菜单\n");
-			if (getchar())
+			system("PAUSE");
 				break;
 		}
 		case 3: //3.文件导入迷宫
@@ -383,7 +383,7 @@ int main()
 			if (choice[1] == 0)
 			{
 				puts("请先设定迷宫大小！");
-				if (getchar())
+				system("PAUSE");
 					continue;
 			}
 			choice[2] = 0;
@@ -395,7 +395,7 @@ int main()
 				system("cls");
 				printf("输入文件不存在!\n");
 				puts("\n程序已退出，感谢您的使用！\n");
-				if (getchar())
+				system("PAUSE");
 					return 0;
 			}
 			for (int i = 0; i <= M - 1; i++)
@@ -407,7 +407,7 @@ int main()
 						system("cls");
 						printf("输入文件不合法!\n");
 						puts("\n程序已退出，感谢您的使用！\n");
-						if (getchar())
+						system("PAUSE");
 							return 0;
 					}
 				}
@@ -418,7 +418,7 @@ int main()
 				system("cls");
 				printf("输入文件不合法!\n");
 				puts("\n程序已退出，感谢您的使用！\n");
-				if (getchar())
+				system("PAUSE");
 					return 0;
 			}
 			puts("迷宫读取成功！");
@@ -438,7 +438,7 @@ int main()
 				system("cls");
 				printf("该迷宫无解!\n");
 				puts("\n程序已退出，感谢您的使用！\n");
-				if (getchar())
+				system("PAUSE");
 					return 0;
 			}
 			memset(vis, 0, sizeof(vis));
@@ -446,7 +446,7 @@ int main()
 			count = 0;
 			fclose(fp);
 			puts("\n请按回车返回主菜单\n");
-			if (getchar())
+			system("PAUSE");
 				break;
 		}
 		case 4: //4.修改遍历顺序
@@ -501,7 +501,7 @@ int main()
 			}
 			puts("遍历顺序修改成功！");
 			puts("\n请按回车返回主菜单\n");
-			if (getchar())
+			system("PAUSE");
 				break;
 		}
 		case 5: //5.动态显示路径
@@ -525,7 +525,7 @@ int main()
 			memset(vis, 0, sizeof(vis));
 			puts("动态显示完毕！");
 			puts("\n请按回车返回主菜单\n");
-			if (getchar())
+			system("PAUSE");
 				break;
 		}
 		case 6: //6.输出所有路径
@@ -561,7 +561,7 @@ int main()
 			StackClear(&S);
 			memset(vis, 0, sizeof(vis));
 			puts("\n请按回车返回主菜单\n");
-			if (getchar())
+			system("PAUSE");
 				break;
 		}
 		case 7: //7.输出最短路径
@@ -588,7 +588,7 @@ int main()
 			StackClear(&S);
 			memset(vis, 0, sizeof(vis));
 			puts("\n请按回车返回主菜单\n");
-			if (getchar())
+			system("PAUSE");
 				break;
 		}
 		}
