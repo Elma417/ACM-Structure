@@ -1,4 +1,7 @@
-﻿typedef int Status;
+﻿#define _CRT_SECURE_NO_WARNINGS 1   //Visual Studio Scanf会被定义为不安全操作导致无法编译故将安全警告关闭
+#include <stdio.h>
+#include <stdlib.h>
+typedef int Status;
 #define stack_init_size 1050
 #define stack_increment 10
 #define ERROR 0
