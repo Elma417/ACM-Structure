@@ -1,4 +1,3 @@
-
 #include"CreatPuzzle.cpp"
 Status Judge(PosType e) //判断是否可走
 {
@@ -85,7 +84,7 @@ void PrintMaze() //打印迷宫
 		puts("");
 	}
 }
-void DFS(PosType start, PosType end, SqStack* s, int sta)
+void DynamicDFS(PosType start, PosType end, SqStack* s, int sta)
 //sta=0时,检测是否可通；sta=1时，深度搜索路径
 {
 	if (count == 1)
@@ -135,13 +134,13 @@ void DFS(PosType start, PosType end, SqStack* s, int sta)
 		}
 		vis[nextpos.seat.x][nextpos.seat.y] = 1;
 		Push(s, nextpos);
-		DFS(nextpos.seat, end, s, sta);
+		DynamicDFS(nextpos.seat, end, s, sta);
 		if (vis[nextpos.seat.x][nextpos.seat.y] != -1)
 			vis[nextpos.seat.x][nextpos.seat.y] = 0;
 		Pop(s, &nextpos);
 	}
 }
-void MulDfs(PosType start, PosType end, SqStack* s) //深度搜索所有路径
+void MultipleDfs(PosType start, PosType end, SqStack* s) //深度搜索所有路径
 {
 	if (count >= 10)
 		return;
@@ -163,12 +162,12 @@ void MulDfs(PosType start, PosType end, SqStack* s) //深度搜索所有路径
 		vis[start.x][start.y] = i;
 		vis[nextpos.seat.x][nextpos.seat.y] = 1;
 		Push(s, nextpos);
-		MulDfs(nextpos.seat, end, s);
+		MultipleDfs(nextpos.seat, end, s);
 		vis[nextpos.seat.x][nextpos.seat.y] = 0;
 		Pop(s, &nextpos);
 	}
 }
-void BestDfs(PosType start, PosType end, SqStack* s, int len) //深度搜索最短路径
+void OptimalDfs(PosType start, PosType end, SqStack* s, int len) //深度搜索最短路径
 {
 	if (start.x == end.x && start.y == end.y)
 	{
@@ -217,7 +216,7 @@ void BestDfs(PosType start, PosType end, SqStack* s, int len) //深度搜索最短路径
 		vis[start.x][start.y] = i;
 		vis[nextpos.seat.x][nextpos.seat.y] = 1;
 		Push(s, nextpos);
-		BestDfs(nextpos.seat, end, s, len + 1);
+		OptimalDfs(nextpos.seat, end, s, len + 1);
 		vis[nextpos.seat.x][nextpos.seat.y] = 0;
 		Pop(s, &nextpos);
 	}

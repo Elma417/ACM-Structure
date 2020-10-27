@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SqStack",
+    "\\SqStack\\HomeWork"
   ],
+  "SelectedNode": "\\SqStack\\HomeWork\\Solve.cpp",
   "PreviewInSolutionExplorer": false
 }

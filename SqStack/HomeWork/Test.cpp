@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
-
 #include"Solve.cpp"
+
+//控制用户界面的交互
 int main()
 {
 	int choice[4];
@@ -18,8 +19,8 @@ int main()
 	{
 		fflush(stdin);
 		system("cls");
-		puts("*************************Maze*************************");
-		puts("                       游戏目录");
+		puts("---------------Main Memu----------------");
+	//		puts("                       游戏目录");
 		puts("                   1.设定迷宫大小");
 		puts("                   2.自动生成迷宫");
 		puts("                   3.文件导入迷宫");
@@ -28,7 +29,7 @@ int main()
 		puts("                   6.输出所有路径");
 		puts("                   7.输出最短路径");
 		puts("                   8.退出迷宫程序");
-		puts("******************************************************");
+		puts("--------------------------------------------");
 		printf("请输入您的选择:");
 		int opt;
 		if (!scanf("%d", &opt) || opt < 1 || opt > 8) //检查输入
@@ -48,7 +49,7 @@ int main()
 			puts("程序已退出！\n感谢您的使用！\n");
 			puts("班级：19184115");
 			puts("专业:计算机科学与技术（人工智能与大数据）创新实验班");
-			puts("洪智豪 19195216");
+			puts("姓名：周建屹");
 
 			system("PAUSE");
 			return 0;
@@ -107,7 +108,7 @@ int main()
 			do
 			{
 				Random();
-				DFS(start, end, &S, 0);
+				DynamicDFS(start, end, &S, 0);
 			} while (count == 0); //随机生成迷宫直到迷宫可通
 			memset(vis, 0, sizeof(vis));
 			puts("迷宫生成成功！");
@@ -181,7 +182,7 @@ int main()
 						printf("□");
 				puts("");
 			}
-			DFS(start, end, &S, 0);
+			DynamicDFS(start, end, &S, 0);
 			if (count == 0)
 			{
 				system("cls");
@@ -205,7 +206,6 @@ int main()
 			{
 				system("cls");
 				puts("请输入遍历顺序对应的编号：1.右 2.下 3.左 4.上");
-
 				puts("请输入第一个：");
 				scanf("%d", &dirr[1]);
 				if (dirr[1] != 1 && dirr[1] != 2 && dirr[1] != 3 && dirr[1] != 4)
@@ -268,7 +268,7 @@ int main()
 				Sleep(1600);
 				continue;
 			}
-			DFS(start, end, &S, 1);
+			DynamicDFS(start, end, &S, 1);
 			count = 0;
 			StackClear(&S);
 			memset(vis, 0, sizeof(vis));
@@ -303,7 +303,7 @@ int main()
 				puts("");
 			}
 			puts("\n");
-			MulDfs(start, end, &S);
+			MultipleDfs(start, end, &S);
 			if (count == 10)
 				puts("\n已显示10条路径，剩余路径省略！\n");
 			count = 0;
@@ -328,7 +328,7 @@ int main()
 				Sleep(1600);
 				continue;
 			}
-			BestDfs(start, end, &S, 1);
+			OptimalDfs(start, end, &S, 1);
 			if (count < 10)
 				printf("一共有%d条最短路；最短的路径长度为%d。\n", count, minlength);
 			else

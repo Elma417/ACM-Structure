@@ -9,6 +9,7 @@ typedef int Status;
 #define FALSE 0
 #define OVERFLOW 0
 #define OK 1
+//实现了标准栈 包含以下供调用的函数
 typedef struct PosType
 {
 	int x;
