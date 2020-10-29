@@ -19,23 +19,22 @@ int main()
 	{
 		fflush(stdin);
 		system("cls");
-		puts("---------------Main Memu---------------");
-	//		puts("                       游戏目录");
-		puts("------------1.设定迷宫大小------------");
-		puts("------------2.自动生成迷宫------------");
-		puts("------------3.文件导入迷宫------------");
-		puts("------------4.修改遍历顺序------------");
-		puts("------------5.动态显示路径------------");
-		puts("------------6.输出所有路径------------");
-		puts("------------7.输出最短路径------------");
-		puts("------------8.退出迷宫程序------------");
-		puts("---------------------------------------");
-		printf("请输入您的选择:");
+		puts("---------------------Main Memu---------------------");
+		puts("------------1. Set the size of the maze------------");
+		puts("------------2. Automatically generate maze---------");
+		puts("------------3. File import maze--------------------");
+		puts("------------4. Modify the traversal order----------");
+		puts("------------5. Dynamic display path----------------");
+		puts("------------6. Output all paths--------------------");
+		puts("------------7. Output shortest path----------------");
+		puts("------------8. Exit the program--------------------");
+		puts("---------------------------------------------------");
+		printf("Please enter your choice:");
 		int opt;
 		if (!scanf("%d", &opt) || opt < 1 || opt > 8) //检查输入
 		{
 			fflush(stdin);
-			puts("输入非法，请重新输入！");
+			puts("Illegal input, please re-enter！");
 			Sleep(1600);
 			continue;
 		}
@@ -46,10 +45,11 @@ int main()
 		case 8: //8.退出迷宫程序
 		{
 			system("cls");
-			puts("程序已退出！\n感谢您的使用！\n");
-			puts("班级：19184115");
-			puts("专业:计算机科学与技术（人工智能与大数据）创新实验班");
-			puts("姓名：周建屹");
+			puts("Program has exited！\n");
+			puts("班级:19184115");
+			puts("专业:理工类实验班");
+			puts("学号:19151135");
+			puts("姓名:周建屹");
 
 			system("PAUSE");
 			return 0;
@@ -61,11 +61,11 @@ int main()
 			while (1)
 			{
 				system("cls");
-				puts("请输入迷宫的宽(5~10)：");
+				puts("Please enter the width of the maze(5~10)：");
 				if (scanf("%d", &M) == 0 || M > 10 || M < 5)
 				{
 					fflush(stdin);
-					puts("输入非法，请重新输入！");
+					puts("Illegal input, please re-enter！");
 					Sleep(1600);
 					continue;
 				}
@@ -74,18 +74,18 @@ int main()
 			while (1)
 			{
 				system("cls");
-				puts("请输入迷宫的长(5~10)：");
+				puts("Please enter the length of the maze(5~10)：");
 				scanf("%d", &N);
 				if (N > 10 || N < 5)
 				{
 					fflush(stdin);
-					puts("输入非法，请重新输入！");
+					puts("Illegal input, please re-enter！");
 					Sleep(1600);
 					continue;
 				}
 				break;
 			}
-			puts("迷宫设置完毕！\n请按回车返回主菜单");
+			puts("The maze is set up!\nPlease press ENTER to return to the Main Menu");
 			start.x = 1;
 			start.y = 0;
 			end.x = M - 2;
@@ -130,23 +130,42 @@ int main()
 		case 3: //3.文件导入迷宫
 		{
 			system("cls");
+			/*
 			if (choice[1] == 0)
 			{
-				puts("请先设定迷宫大小！");
+				puts("Please set the size of the maze first！");
 				system("PAUSE");
 					continue;
 			}
-			choice[2] = 0;
-			choice[3] = 1;
+			*/
 			FILE* fp;
 			if ((fp = fopen("input.txt", "r")) == NULL)
 			{
 				system("cls");
-				printf("输入文件不存在!\n");
-				puts("\n程序已退出，感谢您的使用！\n");
+				printf("File Not Exist!!\n");
+				puts("\nProgram has exited！\n");
 				system("PAUSE");
 					return 0;
+			}//判空
+			M = 0;
+			N = 1;
+			char c;
+			int temp;
+			fscanf(fp, "%c", &c);
+			while (('\n' != c))
+			{
+				fscanf(fp, "%c", &c);
+				if (c == '0' || c == '1')N++;
 			}
+			fp = fopen("input.txt", "r");
+			while (fscanf(fp, "%d", &temp) != EOF) {
+				for (int i = 0;i < N;i++)
+				{
+					fscanf(fp, "%d", &temp);
+				}
+				M++;
+			}
+			fp = fopen("input.txt", "r");
 			for (int i = 0; i <= M - 1; i++)
 				for (int j = 0; j <= N - 1; j++)
 				{
@@ -154,8 +173,8 @@ int main()
 					if (fscanf(fp, "%d", &Maze[i][j]) == EOF || (Maze[i][j] != 0 && Maze[i][j] != 1))
 					{
 						system("cls");
-						printf("输入文件不合法!\n");
-						puts("\n程序已退出，感谢您的使用！\n");
+						printf("Invalid input file!\n");
+						puts("\nProgram has exited！\n");
 						system("PAUSE");
 							return 0;
 					}
@@ -165,13 +184,13 @@ int main()
 			if (test != -114)
 			{
 				system("cls");
-				printf("输入文件不合法!\n");
-				puts("\n程序已退出，感谢您的使用！\n");
+				printf("Invalid input file!\n");
+				puts("\nProgram has exited！\n");
 				system("PAUSE");
 					return 0;
 			}
-			puts("迷宫读取成功！");
-			puts("输入文件中的迷宫为：");
+			puts("The maze is successfully read！");
+			puts("The maze in the input file is：");
 			for (int i = 0; i < M; i++)
 			{
 				for (int j = 0; j < N; j++)
@@ -181,20 +200,30 @@ int main()
 						printf("□");
 				puts("");
 			}
+			memset(choice, 0, sizeof(choice));
+			choice[1] = 1;
+			choice[3] = 1;
+			start.x = 1;
+			start.y = 0;
+			end.x = M - 2;
+			end.y = N - 1;
+
 			DynamicDFS(start, end, &S, 0);
+			
 			if (count == 0)
 			{
 				system("cls");
 				printf("该迷宫无解!\n");
-				puts("\n程序已退出，感谢您的使用！\n");
+				puts("\nThe program has exited!\n");
 				system("PAUSE");
 					return 0;
 			}
+			
 			memset(vis, 0, sizeof(vis));
 			puts("");
 			count = 0;
 			fclose(fp);
-			puts("\n请按回车返回主菜单\n");
+			puts("\nPlease press ENTER to return to the Main Menu\n");
 			system("PAUSE");
 				break;
 		}
@@ -248,7 +277,7 @@ int main()
 				break;
 			}
 			puts("遍历顺序修改成功！");
-			puts("\n请按回车返回主菜单\n");
+			puts("\nPlease press ENTER to return to the Main Menu\n");
 			system("PAUSE");
 				break;
 		}
@@ -272,7 +301,7 @@ int main()
 			StackClear(&S);
 			memset(vis, 0, sizeof(vis));
 			puts("动态显示完毕！");
-			puts("\n请按回车返回主菜单\n");
+			puts("\nPlease press ENTER to return to the Main Menu\n");
 			system("PAUSE");
 				break;
 		}
@@ -308,7 +337,7 @@ int main()
 			count = 0;
 			StackClear(&S);
 			memset(vis, 0, sizeof(vis));
-			puts("\n请按回车返回主菜单\n");
+			puts("\nPlease press ENTER to return to the Main Menu\n");
 			system("PAUSE");
 				break;
 		}
@@ -335,7 +364,7 @@ int main()
 			count = 0;
 			StackClear(&S);
 			memset(vis, 0, sizeof(vis));
-			puts("\n请按回车返回主菜单\n");
+			puts("\nPlease press ENTER to return to the Main Menu\n");
 			system("PAUSE");
 				break;
 		}
