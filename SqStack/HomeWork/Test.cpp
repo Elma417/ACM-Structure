@@ -141,7 +141,6 @@ int main()
 			FILE* fp;
 			if ((fp = fopen("input.txt", "r")) == NULL)
 			{
-
 				system("cls");
 				printf("输入文件不存在!\n");
 				puts("\n程序已退出，感谢您的使用！\n");
@@ -161,9 +160,9 @@ int main()
 							return 0;
 					}
 				}
-			int test = -19195216;
+			int test = -114;
 			fscanf(fp, "%d", &test);
-			if (test != -19195216)
+			if (test != -114)
 			{
 				system("cls");
 				printf("输入文件不合法!\n");
